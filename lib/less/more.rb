@@ -65,6 +65,11 @@ class Less::More
           css
         end
 
+        css.gsub!(/opacity\s*:\s*(\d*\.\d+)/) do
+          ie_value = ($1.to_f * 100).round
+          %{opacity: #{$1}; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=#{ie_value})"; filter: alpha(opacity=#{ie_value})}
+        end
+
         # write the css
         FileUtils.mkdir_p File.dirname(generated)
         File.open(generated, "w"){|f| f.write css }
