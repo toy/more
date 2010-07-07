@@ -65,6 +65,7 @@ class Less::More
           css
         end
 
+        css = ApplicationController.new.render_to_string :inline => '<%= css.gsub!(/url\\(([\'"])?(.*?)\\1?\\)/){ %{url(#{compute_public_path($2, ".")})} } %>', :locals => {:css => css}
         css.gsub!(/opacity\s*:\s*(\d*\.\d+)/) do
           ie_value = ($1.to_f * 100).round
           %{opacity: #{$1}; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=#{ie_value})"; filter: alpha(opacity=#{ie_value})}
